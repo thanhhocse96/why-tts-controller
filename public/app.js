@@ -1,7 +1,9 @@
 const state = {
   health: null,
   jobs: [],
-  assets: []
+  assets: [],
+  selectedAssetId: null,
+  theme: localStorage.getItem('zc-theme') || 'dark'
 };
 
 const el = {
@@ -18,8 +20,13 @@ const el = {
   formMessage: document.querySelector('#formMessage'),
   queueRows: document.querySelector('#queueRows'),
   assetList: document.querySelector('#assetList'),
+  assetDetail: document.querySelector('#assetDetail'),
+  editAssetBin: document.querySelector('#editAssetBin'),
   refreshQueue: document.querySelector('#refreshQueue'),
-  refreshAssets: document.querySelector('#refreshAssets')
+  refreshAssets: document.querySelector('#refreshAssets'),
+  themeToggle: document.querySelector('#themeToggle'),
+  tabs: Array.from(document.querySelectorAll('.tab')),
+  tabPanels: Array.from(document.querySelectorAll('.tab-panel'))
 };
 
 async function api(path, options = {}) {
@@ -76,18 +83,61 @@ function renderQueue() {
 function renderAssets() {
   if (state.assets.length === 0) {
     el.assetList.innerHTML = '<p class="empty">No assets yet.</p>';
+    el.assetDetail.innerHTML = 'Select an asset.';
+    el.editAssetBin.innerHTML = 'Assets will be available here.';
     return;
   }
 
+  if (!state.selectedAssetId || !state.assets.some((asset) => asset.id === state.selectedAssetId)) {
+    state.selectedAssetId = state.assets[0].id;
+  }
+
   el.assetList.innerHTML = state.assets.map((asset) => `
-    <article class="asset">
-      <div class="asset-title">
-        <strong>${escapeHtml(asset.filename)}</strong>
+    <article class="asset compact-row ${asset.id === state.selectedAssetId ? 'selected' : ''}" data-asset-id="${escapeHtml(asset.id)}">
+      <button class="play-button" type="button" title="Preview">▶</button>
+      <div class="asset-main">
+        <strong>${escapeHtml(trimText(asset.content || asset.filename, 70))}</strong>
+        <span>${escapeHtml(asset.filename)}</span>
+      </div>
+      <span class="asset-duration">${formatDuration(asset.duration_ms)}</span>
+    </article>
+  `).join('');
+
+  el.assetList.querySelectorAll('[data-asset-id]').forEach((row) => {
+    row.addEventListener('click', () => {
+      state.selectedAssetId = row.dataset.assetId;
+      renderAssets();
+    });
+  });
+
+  renderAssetDetail();
+  renderEditAssetBin();
+}
+
+function renderAssetDetail() {
+  const asset = state.assets.find((item) => item.id === state.selectedAssetId);
+  if (!asset) {
+    el.assetDetail.innerHTML = 'Select an asset.';
+    return;
+  }
+
+  el.assetDetail.innerHTML = `
+    <div class="detail-filename">${escapeHtml(asset.filename)}</div>
+    <div class="detail-text">${escapeHtml(asset.content || '')}</div>
+    <audio controls preload="none" src="/api/audio/${encodeURIComponent(asset.filename)}"></audio>
+    <button class="primary" type="button" disabled>Add to Edit</button>
+  `;
+}
+
+function renderEditAssetBin() {
+  el.editAssetBin.innerHTML = state.assets.map((asset) => `
+    <div class="asset compact-row">
+      <span class="play-button">+</span>
+      <div class="asset-main">
+        <strong>${escapeHtml(trimText(asset.content || asset.filename, 52))}</strong>
         <span>${formatDuration(asset.duration_ms)}</span>
       </div>
-      <div>${escapeHtml(trimText(asset.content || '', 120))}</div>
-      <audio controls preload="none" src="/api/audio/${encodeURIComponent(asset.filename)}"></audio>
-    </article>
+    </div>
   `).join('');
 }
 
@@ -158,10 +208,29 @@ function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
+function setActiveTab(name) {
+  el.tabs.forEach((tab) => tab.classList.toggle('active', tab.dataset.tab === name));
+  el.tabPanels.forEach((panel) => panel.classList.toggle('active', panel.id === `tab-${name}`));
+}
+
+function applyTheme(theme) {
+  state.theme = theme;
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem('zc-theme', theme);
+  el.themeToggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
+}
+
 el.queueForm.addEventListener('submit', addQueue);
 el.refreshQueue.addEventListener('click', refreshQueue);
 el.refreshAssets.addEventListener('click', refreshAssets);
+el.themeToggle.addEventListener('click', () => {
+  applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+});
+el.tabs.forEach((tab) => {
+  tab.addEventListener('click', () => setActiveTab(tab.dataset.tab));
+});
 
+applyTheme(state.theme);
 refreshAll().catch((error) => {
   setMessage(error.message, 'error');
 });

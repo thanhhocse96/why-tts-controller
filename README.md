@@ -1,6 +1,8 @@
-# ZeroClaw Vbee Automate
+# VoiceFactory
 
-Local-first Gateway Core for ZeroClaw x Vbee TTS automation.
+Local-first TTS production app with Gateway Core, provider adapters, audio assets, and future timeline export.
+
+Vbee is the first real provider target, but VoiceFactory is designed to support more paid TTS providers through adapter contracts.
 
 The project is currently in **M0 - Gateway Core Fake End-to-End**. The goal is to make the local queue, fake worker, asset registry, and HTTP audio serving work before integrating real Vbee browser automation.
 

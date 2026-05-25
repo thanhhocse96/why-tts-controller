@@ -4,7 +4,7 @@
 
 ## Current Milestone
 
-Current milestone: **M0 - Gateway Core Fake End-to-End**
+Current milestone: **M1 - Tauri Gateway Lifecycle**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -64,6 +64,24 @@ Rules:
 - After adding a docs file, update `docs/README.md`.
 - If the current milestone changes, update `.context/MILESTONES.md`, `AGENTS.md`, and docs naming together.
 
+## Module Test And Report Protocol
+
+After finishing a module or meaningful slice, agents must:
+
+1. Run the module-specific test or smoke command.
+2. Run the relevant syntax/static checks.
+3. Run context consistency check.
+4. Create or update a test report under `docs/milestones/` using the current milestone code.
+5. Include command, result, covered cases, residual risk, and next action.
+
+Test report filename format:
+
+```text
+<milestone>_<sequence>_<module>-test-report.md
+```
+
+If a test cannot be run, the report must say why and what remains unverified.
+
 ## Architecture Rules
 
 - Gateway Core is the only process allowed to write SQLite.
@@ -82,6 +100,37 @@ cd /mnt/d/Github/ZeroClaw-Vbee-Automate
 ```
 
 Node is required for Gateway execution. If it is missing, follow the installation protocol instead of improvising.
+
+### Manual Test Request Protocol
+
+When the human asks to "bật lên", "online", or "test thử" for manual browser testing, do not spawn a hidden/background Windows process.
+
+Return this WSL foreground instruction instead:
+
+```bash
+cd /mnt/d/Github/ZeroClaw-Vbee-Automate
+source ~/.nvm/nvm.sh
+nvm use 24
+HOST=0.0.0.0 npm run dev
+```
+
+Tell the human to keep that WSL terminal open, then open:
+
+```text
+http://127.0.0.1:3000/
+```
+
+If Windows browser cannot connect through `127.0.0.1`, ask the human to run this in WSL:
+
+```bash
+hostname -I
+```
+
+Then use:
+
+```text
+http://<WSL_IP>:3000/
+```
 
 ## Verification
 

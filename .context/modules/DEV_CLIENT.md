@@ -13,6 +13,18 @@ It must use the same public Gateway HTTP API that future UI and ZeroClaw clients
 
 The UI is intentionally plain static HTML/CSS/JavaScript served by Gateway. This avoids adding a frontend build system before the Gateway contract stabilizes.
 
+The product direction is tabbed desktop UI:
+
+```text
+Queue  -> create and monitor jobs
+Assets -> compact asset browser with selected preview
+Edit   -> future sound timeline and stereo export
+```
+
+The dev client should keep light and dark themes available because long desktop sessions are expected.
+
+The product name is VoiceFactory. UI copy should use VoiceFactory unless referring to a specific provider such as Vbee.
+
 ## [manual] Invariants & Constraints
 
 The dev client must not become the product UI.
@@ -22,6 +34,10 @@ The dev client must not introduce client-side access to local file paths, SQLite
 Audio playback must use `/api/audio/:filename`.
 
 Queue creation must use `POST /api/queue`.
+
+Assets must be compact by default. Full native audio players should appear only in preview/detail areas, not on every list row.
+
+Theme preference should be local to the browser/dev client and must not require server state.
 
 ## [manual] Test Strategy
 
@@ -33,6 +49,8 @@ Test through the browser and through `scripts/smoke-gateway.sh`:
 - wait for fake worker
 - confirm asset appears
 - confirm audio element points to `/api/audio/:filename`
+- switch light/dark theme
+- select an asset and confirm preview renders only for the selected asset
 
 ## [manual] Behavior chưa implement (TODO)
 
@@ -40,7 +58,9 @@ Chunk splitting is not implemented here.
 
 Voice catalog management is not implemented here.
 
-Sound Editor timeline is not implemented here.
+Sound Editor timeline is represented as a placeholder Edit tab only.
+
+Stereo export is represented as a disabled placeholder only.
 
 Tauri lifecycle behavior is not implemented here.
 <!-- MANUAL_END -->

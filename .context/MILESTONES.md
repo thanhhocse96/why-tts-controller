@@ -1,8 +1,8 @@
 # Milestones
 
-Current: M0 - Gateway Core Fake End-to-End
+Current: M1 - Tauri Gateway Lifecycle
 
-## Current: M0 - Gateway Core Fake End-to-End
+## Completed: M0 - Gateway Core Fake End-to-End
 
 Goal: turn the project from architecture documents into a runnable local Gateway skeleton.
 
@@ -25,9 +25,22 @@ Out of scope:
 - Podman as default runtime.
 - Sound Editor timeline.
 
-## Next: M1 - Tauri Gateway Lifecycle
+## Current: M1 - Tauri Gateway Lifecycle
 
 Goal: Tauri starts/checks/polls Gateway and shows degraded runtime state.
+
+Acceptance:
+
+- [x] Lifecycle command can report Gateway status.
+- [x] Lifecycle command starts Gateway if it is not running.
+- [x] Lifecycle command detects a healthy existing Gateway without spawning a duplicate.
+- [x] Lifecycle command refuses to own/stop a Gateway it did not start.
+- [x] Port occupied but `/health` unavailable is reported as actionable conflict.
+- [x] M1 lifecycle CLI work is documented in `docs/milestones/M1_*.md`.
+- [x] M1 lifecycle CLI has a module test report.
+- [x] Desktop UI direction documents Queue/Assets/Edit tabs and light/dark mode.
+- [x] Product name and provider-extension scope are documented as VoiceFactory.
+- [ ] Tauri shell calls or ports the lifecycle behavior.
 
 ## Next: M2 - Browser CDP and Vbee Preview
 

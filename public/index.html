@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ZeroClaw Vbee Gateway</title>
+    <title>VoiceFactory Gateway</title>
     <link rel="stylesheet" href="/dev/styles.css">
   </head>
   <body>
@@ -11,13 +11,22 @@
       <section class="topbar" aria-label="Runtime status">
         <div>
           <p class="eyebrow">Gateway Core</p>
-          <h1>ZeroClaw Vbee Automate</h1>
+          <h1>VoiceFactory</h1>
         </div>
-        <div class="status" id="healthStatus">
-          <span class="dot"></span>
-          <span>Checking</span>
+        <div class="top-actions">
+          <button class="ghost icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
+          <div class="status" id="healthStatus">
+            <span class="dot"></span>
+            <span>Checking</span>
+          </div>
         </div>
       </section>
+
+      <nav class="tabs" aria-label="Workspace tabs">
+        <button class="tab active" type="button" data-tab="queue">Queue</button>
+        <button class="tab" type="button" data-tab="assets">Assets</button>
+        <button class="tab" type="button" data-tab="edit">Edit</button>
+      </nav>
 
       <section class="runtime-grid" aria-label="Runtime cards">
         <article class="metric">
@@ -38,7 +47,7 @@
         </article>
       </section>
 
-      <section class="workbench">
+      <section class="workbench tab-panel active" id="tab-queue">
         <form class="composer" id="queueForm">
           <div class="field field-full">
             <label for="content">Text</label>
@@ -84,12 +93,56 @@
           </div>
         </section>
 
-        <section class="panel assets" aria-label="Assets">
+      </section>
+
+      <section class="asset-workspace tab-panel" id="tab-assets" aria-label="Assets">
+        <section class="panel">
           <div class="panel-head">
             <h2>Assets</h2>
             <button class="ghost" id="refreshAssets" type="button">Refresh</button>
           </div>
-          <div id="assetList" class="asset-list"></div>
+          <div id="assetList" class="asset-list compact"></div>
+        </section>
+
+        <section class="panel asset-detail" aria-label="Asset preview">
+          <div class="panel-head">
+            <h2>Preview</h2>
+          </div>
+          <div id="assetDetail" class="asset-detail-body empty">Select an asset.</div>
+        </section>
+      </section>
+
+      <section class="edit-workspace tab-panel" id="tab-edit" aria-label="Edit timeline">
+        <aside class="panel">
+          <div class="panel-head">
+            <h2>Asset Bin</h2>
+          </div>
+          <div id="editAssetBin" class="asset-bin empty">Assets will be available here.</div>
+        </aside>
+
+        <section class="panel timeline-panel">
+          <div class="panel-head">
+            <h2>Timeline</h2>
+            <button class="primary" type="button" disabled>Export Stereo</button>
+          </div>
+          <div class="timeline">
+            <div class="ruler">
+              <span>00:00</span>
+              <span>00:05</span>
+              <span>00:10</span>
+              <span>00:15</span>
+            </div>
+            <div class="track">
+              <span class="track-label">Voice</span>
+              <div class="track-lane">
+                <div class="clip placeholder">Add assets from Asset Bin</div>
+              </div>
+            </div>
+            <div class="track">
+              <span class="track-label">Music</span>
+              <div class="track-lane muted-lane"></div>
+            </div>
+          </div>
         </section>
       </section>
     </main>

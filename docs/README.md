@@ -56,6 +56,7 @@ After adding, moving, or renaming a docs file, update this index.
 3. [Phase 1 Design](design/03_phase-1-design.md)
 4. [Migration Plan To Gateway Core](design/04_migration-plan-to-gateway-core.md)
 5. [Critique Response And Plan Amendments](design/05_critique-response-and-plan-amendments.md)
+6. [VoiceFactory Provider Adapter Contract](design/06_voicefactory-provider-adapter-contract.md)
 
 ## Implemented Milestone Docs
 
@@ -64,3 +65,10 @@ After adding, moving, or renaming a docs file, update this index.
 1. [Gateway Core Fake End-to-End](milestones/M0_001_gateway-core-fake-end-to-end.md)
 2. [Dev Client Gateway Validation](milestones/M0_002_dev-client-gateway-validation.md)
 3. [Dev Runtime Scripts](milestones/M0_003_dev-runtime-scripts.md)
+
+### M1 - Tauri Gateway Lifecycle
+
+1. [Gateway Lifecycle CLI](milestones/M1_001_gateway-lifecycle-cli.md)
+2. [Gateway Lifecycle Test Report](milestones/M1_002_gateway-lifecycle-test-report.md)
+3. [Desktop UI Tabs And Theme Direction](milestones/M1_003_desktop-ui-tabs-and-theme-direction.md)
+4. [VoiceFactory Rename And Provider Scope](milestones/M1_004_voicefactory-rename-and-provider-scope.md)

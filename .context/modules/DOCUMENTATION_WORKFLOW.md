@@ -39,6 +39,21 @@ verification commands or acceptance checks
 known limits
 ```
 
+Each completed module must also have a test report or a clear test report section in its milestone docs.
+
+Test reports must include:
+
+```text
+test date
+module/slice under test
+commands run
+pass/fail result
+cases covered
+evidence or important output
+residual risks
+next action
+```
+
 `docs/README.md` must be updated whenever a docs file is added, renamed, or moved.
 
 Design docs must not be moved into an archive folder unless the human explicitly says they are obsolete.
@@ -50,6 +65,14 @@ Documentation changes should be verified by:
 ```bash
 rg --files docs
 python ../context-mapping/cli.py check-consistency .
+```
+
+Module completion should be verified with a module-specific command, for example:
+
+```bash
+npm run smoke
+npm run smoke:lifecycle
+node --check <file>
 ```
 
 If docs mention commands, those commands should be run when practical, or the doc should clearly state that they were not run.
