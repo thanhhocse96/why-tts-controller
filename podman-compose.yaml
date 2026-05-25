@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  tts-gateway:
+    build: .
+    container_name: vbee-tts-gateway
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DATA_DIR=/app/data
+      - VBEE_ADAPTER=fake

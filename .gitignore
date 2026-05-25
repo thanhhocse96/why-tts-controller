@@ -1,0 +1,16 @@
+.env
+.local/
+node_modules/
+npm-debug.log*
+
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/audio/*
+!data/audio/.gitkeep
+data/audio/*.tmp
+
+tts.db
+tts.db-shm
+tts.db-wal
+tts-output/

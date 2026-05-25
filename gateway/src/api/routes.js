@@ -1,0 +1,64 @@
+import { readJson, sendError, sendFile, sendJson } from './http-utils.js';
+
+export function createRouter({ config, queueService, fileService, jobRunner, db }) {
+  return async function route(req, res) {
+    try {
+      const url = new URL(req.url, `http://${req.headers.host || '127.0.0.1'}`);
+
+      if (req.method === 'GET' && url.pathname === '/health') {
+        return sendJson(res, 200, {
+          ok: true,
+          gateway: 'running',
+          db: db ? 'ok' : 'unavailable',
+          browserCdp: 'unavailable',
+          vbeeSession: config.runtime.vbeeAdapter === 'fake' ? 'fake' : 'unknown',
+          worker: jobRunner.status(),
+          degraded: config.runtime.vbeeAdapter !== 'fake',
+          runtime: config.runtime
+        });
+      }
+
+      if (req.method === 'POST' && url.pathname === '/api/queue') {
+        const body = await readJson(req);
+        const job = queueService.createJob(body);
+        return sendJson(res, 201, { ok: true, job });
+      }
+
+      if (req.method === 'GET' && url.pathname === '/api/queue') {
+        return sendJson(res, 200, { ok: true, jobs: queueService.listJobs() });
+      }
+
+      const jobMatch = url.pathname.match(/^\/api\/jobs\/([^/]+)$/);
+      if (req.method === 'GET' && jobMatch) {
+        const job = queueService.getJob(jobMatch[1]);
+        return job
+          ? sendJson(res, 200, { ok: true, job })
+          : sendJson(res, 404, { ok: false, error: 'job not found' });
+      }
+
+      const retryMatch = url.pathname.match(/^\/api\/jobs\/([^/]+)\/retry$/);
+      if (req.method === 'POST' && retryMatch) {
+        return sendJson(res, 200, { ok: true, job: queueService.retryJob(retryMatch[1]) });
+      }
+
+      const cancelMatch = url.pathname.match(/^\/api\/jobs\/([^/]+)\/cancel$/);
+      if (req.method === 'POST' && cancelMatch) {
+        return sendJson(res, 200, { ok: true, job: queueService.cancelJob(cancelMatch[1]) });
+      }
+
+      if (req.method === 'GET' && url.pathname === '/api/assets') {
+        return sendJson(res, 200, { ok: true, assets: queueService.listAssets() });
+      }
+
+      const audioMatch = url.pathname.match(/^\/api\/audio\/([^/]+)$/);
+      if (req.method === 'GET' && audioMatch) {
+        const filePath = fileService.resolveAudioPath(decodeURIComponent(audioMatch[1]));
+        return sendFile(res, filePath);
+      }
+
+      return sendJson(res, 404, { ok: false, error: 'not found' });
+    } catch (error) {
+      return sendError(res, error);
+    }
+  };
+}

@@ -1,0 +1,16 @@
+{
+  "name": "zeroclaw-vbee-automate",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Local-first Gateway Core for ZeroClaw x Vbee TTS automation.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --experimental-sqlite server.js",
+    "start": "node --experimental-sqlite server.js",
+    "context:build": "python3 ../context-mapping/cli.py build . --quiet",
+    "context:check": "python3 ../context-mapping/cli.py check-consistency ."
+  }
+}
