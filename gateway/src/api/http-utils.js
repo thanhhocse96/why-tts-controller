@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 export async function readJson(req) {
   const chunks = [];
@@ -36,7 +37,36 @@ export function sendFile(res, filePath) {
   stream.pipe(res);
 }
 
+export function sendStaticFile(res, rootDir, requestPath) {
+  const relativePath = requestPath === '/' ? 'index.html' : requestPath.replace(/^\/+/, '');
+  const resolved = path.resolve(rootDir, relativePath);
+  const root = path.resolve(rootDir);
+
+  if (!resolved.startsWith(root + path.sep) && resolved !== root) {
+    return sendJson(res, 400, { ok: false, error: 'invalid static path' });
+  }
+
+  try {
+    const stat = fs.statSync(resolved);
+    if (!stat.isFile()) {
+      return sendJson(res, 404, { ok: false, error: 'not found' });
+    }
+  } catch {
+    return sendJson(res, 404, { ok: false, error: 'not found' });
+  }
+
+  const stream = fs.createReadStream(resolved);
+  stream.on('error', () => {
+    res.destroy();
+  });
+  res.writeHead(200, { 'content-type': contentTypeFor(resolved) });
+  stream.pipe(res);
+}
+
 function contentTypeFor(filePath) {
+  if (filePath.endsWith('.html')) return 'text/html; charset=utf-8';
+  if (filePath.endsWith('.css')) return 'text/css; charset=utf-8';
+  if (filePath.endsWith('.js')) return 'text/javascript; charset=utf-8';
   if (filePath.endsWith('.wav')) return 'audio/wav';
   if (filePath.endsWith('.mp3')) return 'audio/mpeg';
   return 'application/octet-stream';

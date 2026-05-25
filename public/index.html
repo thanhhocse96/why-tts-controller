@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZeroClaw Vbee Gateway</title>
+    <link rel="stylesheet" href="/dev/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-label="Runtime status">
+        <div>
+          <p class="eyebrow">Gateway Core</p>
+          <h1>ZeroClaw Vbee Automate</h1>
+        </div>
+        <div class="status" id="healthStatus">
+          <span class="dot"></span>
+          <span>Checking</span>
+        </div>
+      </section>
+
+      <section class="runtime-grid" aria-label="Runtime cards">
+        <article class="metric">
+          <span>Gateway</span>
+          <strong id="gatewayValue">-</strong>
+        </article>
+        <article class="metric">
+          <span>Database</span>
+          <strong id="dbValue">-</strong>
+        </article>
+        <article class="metric">
+          <span>Browser CDP</span>
+          <strong id="browserValue">-</strong>
+        </article>
+        <article class="metric">
+          <span>Worker</span>
+          <strong id="workerValue">-</strong>
+        </article>
+      </section>
+
+      <section class="workbench">
+        <form class="composer" id="queueForm">
+          <div class="field field-full">
+            <label for="content">Text</label>
+            <textarea id="content" name="content" rows="7">Xin chao, day la job fake dau tien.</textarea>
+          </div>
+
+          <div class="field">
+            <label for="voiceCode">Voice</label>
+            <input id="voiceCode" name="voiceCode" value="fake_voice">
+          </div>
+
+          <div class="field">
+            <label for="speed">Speed</label>
+            <input id="speed" name="speed" type="number" min="0.5" max="2" step="0.05" value="1.05">
+          </div>
+
+          <label class="check">
+            <input id="incognito" name="incognito" type="checkbox" checked>
+            <span>Incognito preview</span>
+          </label>
+
+          <button class="primary" type="submit">Add Queue</button>
+          <p class="message" id="formMessage" role="status"></p>
+        </form>
+
+        <section class="panel" aria-label="Queue">
+          <div class="panel-head">
+            <h2>Queue</h2>
+            <button class="ghost" id="refreshQueue" type="button">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Text</th>
+                  <th>Voice</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody id="queueRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel assets" aria-label="Assets">
+          <div class="panel-head">
+            <h2>Assets</h2>
+            <button class="ghost" id="refreshAssets" type="button">Refresh</button>
+          </div>
+          <div id="assetList" class="asset-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/dev/app.js" type="module"></script>
+  </body>
+</html>

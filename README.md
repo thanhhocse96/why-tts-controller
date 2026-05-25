@@ -23,6 +23,8 @@ This repo uses `../context-mapping` as the agent control layer.
 
 Read [AGENTS.md](AGENTS.md) before changing code.
 
+Project documentation starts at [docs/README.md](docs/README.md).
+
 Useful commands from WSL Debian:
 
 ```bash
@@ -41,6 +43,24 @@ Node.js 24+ is required because M0 uses `node:sqlite`.
 ./scripts/start-gateway-local.sh
 ```
 
+For quick manual testing, keep the Gateway online in the background:
+
+```bash
+npm run online
+```
+
+Stop it later with:
+
+```bash
+npm run offline
+```
+
+Run the automated smoke test with:
+
+```bash
+npm run smoke
+```
+
 After the Gateway starts:
 
 ```bash
@@ -52,3 +72,10 @@ curl http://127.0.0.1:3000/api/queue
 curl http://127.0.0.1:3000/api/assets
 ```
 
+Open the temporary dev client at:
+
+```text
+http://127.0.0.1:3000/
+```
+
+The dev client is only a Gateway validation surface. It is not the final Tauri UI.

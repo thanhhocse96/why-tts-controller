@@ -1,6 +1,9 @@
-import { readJson, sendError, sendFile, sendJson } from './http-utils.js';
+import path from 'node:path';
+import { readJson, sendError, sendFile, sendJson, sendStaticFile } from './http-utils.js';
 
 export function createRouter({ config, queueService, fileService, jobRunner, db }) {
+  const publicDir = path.join(config.rootDir, 'public');
+
   return async function route(req, res) {
     try {
       const url = new URL(req.url, `http://${req.headers.host || '127.0.0.1'}`);
@@ -16,6 +19,11 @@ export function createRouter({ config, queueService, fileService, jobRunner, db 
           degraded: config.runtime.vbeeAdapter !== 'fake',
           runtime: config.runtime
         });
+      }
+
+      if (req.method === 'GET' && (url.pathname === '/' || url.pathname.startsWith('/dev/'))) {
+        const staticPath = url.pathname === '/' ? '/' : url.pathname.slice('/dev'.length) || '/';
+        return sendStaticFile(res, publicDir, staticPath);
       }
 
       if (req.method === 'POST' && url.pathname === '/api/queue') {

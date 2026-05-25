@@ -38,6 +38,32 @@ If `.local/ENVIRONMENT.md` exists, read it before running local toolchains, star
 - If a tension is `high`, stop and wait for human decision.
 - Do not install Node, Python packages, browsers, or system tools without an installation plan and approval.
 
+## Documentation Protocol
+
+Agents must keep implemented work documented in `docs/`.
+
+Documentation has two layers:
+
+```text
+docs/design/
+  01_<name>.md
+  02_<name>.md
+
+docs/milestones/
+  <milestone>_<sequence>_<name>.md
+```
+
+Rules:
+
+- Design source documents belong in `docs/design/` and use numeric order: `01_`, `02_`, `03_`.
+- Implemented milestone work belongs in `docs/milestones/`.
+- Milestone file names must match the milestone code from `.context/MILESTONES.md`, for example `M0_001_gateway-core-fake-end-to-end.md`.
+- Every meaningful completed slice must have or update a milestone doc.
+- Milestone docs must prioritize workflow diagrams first, preferably Mermaid.
+- Milestone docs must explain what was implemented, which files changed, which design pattern was used, how to verify it, and known limits.
+- After adding a docs file, update `docs/README.md`.
+- If the current milestone changes, update `.context/MILESTONES.md`, `AGENTS.md`, and docs naming together.
+
 ## Architecture Rules
 
 - Gateway Core is the only process allowed to write SQLite.
@@ -72,4 +98,3 @@ For Gateway after Node is available:
 npm run dev
 curl http://127.0.0.1:3000/health
 ```
-

@@ -9,6 +9,8 @@ This project is a local-first Vbee TTS automation app. The first real milestone 
 - Human architecture memory lives in `docs/`.
 - Agent operating memory lives in `.context/`.
 - Machine-local setup lives in `.local/ENVIRONMENT.md` and must not be committed.
+- Implemented milestone evidence lives in `docs/milestones/`.
+- Design source documents live in `docs/design/`.
 
 ## Active Architecture
 
@@ -41,3 +43,16 @@ Before editing a module, read the corresponding `.context/modules/*.md` file. If
 
 When a new conflict appears, write it to `.context/TENSIONS_OPEN.md`.
 
+## Documentation Workflow
+
+When a task completes a meaningful implementation slice, the agent must update docs:
+
+```text
+1. Read .context/MILESTONES.md to identify the current milestone code.
+2. Create or update docs/milestones/<milestone>_<sequence>_<name>.md.
+3. Put the workflow diagram first.
+4. Explain implemented behavior, files changed, design patterns, verification, and known limits.
+5. Update docs/README.md index.
+```
+
+Milestone docs are evidence of what works, not aspirational plans.
