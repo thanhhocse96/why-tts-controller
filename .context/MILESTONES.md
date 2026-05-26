@@ -2,6 +2,10 @@
 
 Current: M1 - Tauri Gateway Lifecycle
 
+Detailed roadmap source: `.context/MILESTONE_ROADMAP.md`.
+
+This file is the active milestone pointer. Load only the current milestone in full. Promote one future milestone at a time from `.context/MILESTONE_ROADMAP.md`.
+
 ## Completed: M0 - Gateway Core Fake End-to-End
 
 Goal: turn the project from architecture documents into a runnable local Gateway skeleton.
@@ -45,3 +49,13 @@ Acceptance:
 ## Next: M2 - Browser CDP and Vbee Preview
 
 Goal: Browser CDP health and first real Vbee preview/incognito flow.
+
+Promotion source: `.context/MILESTONE_ROADMAP.md#M2 - Browser CDP Health And Vbee Preview Harness`.
+
+Before coding M2:
+
+- [ ] Re-read `docs/design/04_migration-plan-to-gateway-core.md`.
+- [ ] Re-read `docs/design/07_vbee-dual-execution-workflows.md`.
+- [ ] Re-read `.context/modules/TTS_PROVIDER_ADAPTERS.md`.
+- [ ] Promote M2 acceptance from `.context/MILESTONE_ROADMAP.md` into this file.
+- [ ] Update `AGENTS.md` current milestone if M1 is closed.

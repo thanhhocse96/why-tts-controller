@@ -43,6 +43,7 @@ node --check public/app.js
 ConvertFrom-Json package.json
 ConvertFrom-Json src-tauri/tauri.conf.json
 npm run smoke:lifecycle
+cargo test --manifest-path src-tauri/Cargo.toml
 ```
 
 Toolchain discovery:
@@ -54,11 +55,9 @@ rustc --version
 
 ## Result
 
-PARTIAL PASS.
+PASS.
 
-Available JavaScript, JSON, and lifecycle smoke checks passed.
-
-Rust/Tauri compile was not run because both `cargo` and `rustc` are missing in the current Windows shell and WSL Debian environment.
+JavaScript, JSON, lifecycle smoke, context, and Rust/Tauri unit checks passed.
 
 ## Cases Covered
 
@@ -116,19 +115,104 @@ python3 ../context-mapping/cli.py build . --quiet
 
 Both passed.
 
+## Local Environment Stuck And Fixes
+
+### Rust Toolchain
+
+Initial Rust/Tauri compile could not run because `cargo` and `rustc` were missing. Rust was installed in WSL Debian with rustup for user `shinkuro`.
+
+Current verification:
+
+```bash
+source /home/shinkuro/.cargo/env
+rustc --version
+cargo --version
+```
+
+Observed versions:
+
+```text
+rustc 1.95.0
+cargo 1.95.0
+```
+
+### Cargo PATH
+
+After Rust installation, a shell still reported:
+
+```text
+cargo: command not found
+```
+
+Fix:
+
+```bash
+source /home/shinkuro/.cargo/env
+```
+
+The local profile was adjusted to guard the explicit user path:
+
+```bash
+[ -f "/home/shinkuro/.cargo/env" ] && . "/home/shinkuro/.cargo/env"
+```
+
+This avoids a prior startup error where `$HOME` resolved to `/root` and tried to source `/root/.cargo/env`.
+
+### Linux Tauri Dependencies
+
+Tauri compile failed at first because `pkg-config` was missing.
+
+Fix run by the human in WSL Debian:
+
+```bash
+sudo apt update
+sudo apt install -y pkg-config libglib2.0-dev libgtk-3-dev libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
+```
+
+Verification:
+
+```bash
+command -v pkg-config
+pkg-config --version
+```
+
+Observed:
+
+```text
+/usr/bin/pkg-config
+1.8.1
+```
+
+### Tauri Icon
+
+Tauri compile then failed because `tauri::generate_context!()` expected:
+
+```text
+src-tauri/icons/icon.png
+```
+
+Fix: add a minimal tracked `src-tauri/icons/icon.png` placeholder and do not ignore `src-tauri/icons/`.
+
+### Cargo Build Output
+
+Cargo generated many untracked files under:
+
+```text
+src-tauri/target/
+```
+
+Fix: `.gitignore` now ignores `src-tauri/target/` and `src-tauri/gen/`.
+
 ## Residual Risk
 
-The Rust source has not been compiled locally.
+Manual desktop window verification with `npm run desktop:dev` remains pending.
 
-The Tauri CLI is referenced by `npm run desktop:dev` and `npm run desktop:build`, but no Node or Rust packages were installed during this slice.
-
-Manual desktop verification remains pending until the local Rust/Tauri toolchain is available.
+The current Tauri icon is a minimal placeholder required by Tauri compile-time context generation.
 
 ## Next Action
 
-Install or provide the approved Rust/Tauri toolchain, then run:
+Run the desktop shell manually:
 
 ```bash
 npm run desktop:dev
-cargo test --manifest-path src-tauri/Cargo.toml
 ```

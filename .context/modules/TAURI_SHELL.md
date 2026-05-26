@@ -37,13 +37,19 @@ The static dev client remains temporary; Tauri commands are the bridge for the f
 
 The shell lifecycle module should be covered by Rust unit tests once Rust/Cargo is available locally.
 
-Until a local Rust toolchain is available, verification is limited to:
+Local Rust/Tauri toolchain is available in WSL Debian after sourcing Cargo env:
 
 ```bash
+source /home/shinkuro/.cargo/env
+cargo test --manifest-path src-tauri/Cargo.toml
 node --check scripts/gateway-lifecycle.mjs
 npm run smoke:lifecycle
 python3 ../context-mapping/cli.py check-consistency .
 ```
+
+If Cargo is missing from PATH, source `/home/shinkuro/.cargo/env`.
+
+If Tauri build fails at `pkg-config`, ask the human to install the WSL Debian packages listed in `.local/ENVIRONMENT.md`.
 
 Manual desktop verification should run the Tauri shell with Node 24 available and confirm:
 

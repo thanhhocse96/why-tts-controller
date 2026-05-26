@@ -8,6 +8,8 @@ Current milestone: **M1 - Tauri Gateway Lifecycle**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
+Detailed milestone backlog: `.context/MILESTONE_ROADMAP.md`.
+
 ## Startup Protocol
 
 Every agent task starts with:
@@ -15,9 +17,10 @@ Every agent task starts with:
 ```text
 1. Read .context/GLOBAL.md
 2. Read .context/MILESTONES.md
-3. Read .context/TENSIONS_OPEN.md
-4. Read .context/TENSIONS_ACTIVE.md
-5. Load the module context relevant to the files being edited
+3. Read .context/MILESTONE_ROADMAP.md only for the current or next milestone being promoted
+4. Read .context/TENSIONS_OPEN.md
+5. Read .context/TENSIONS_ACTIVE.md
+6. Load the module context relevant to the files being edited
 ```
 
 For Gateway work, load:
@@ -27,6 +30,41 @@ python3 ../context-mapping/cli.py load gateway/src . --include-manual
 ```
 
 If `.local/ENVIRONMENT.md` exists, read it before running local toolchains, starting servers, installing dependencies, or using paths specific to this machine.
+
+## Milestone Source Protocol
+
+Agents must not invent broad roadmap scope from memory. Build milestone scope from source documents in this order:
+
+```text
+1. Latest explicit human instruction
+2. .context/MILESTONES.md current milestone
+3. .context/MILESTONE_ROADMAP.md promoted milestone
+4. .context/modules/*.md manual sections
+5. docs/design/*.md architecture decisions
+6. docs/milestones/*.md implemented evidence
+7. code reality
+```
+
+Use `.context/MILESTONES.md` as the active checklist and `.context/MILESTONE_ROADMAP.md` as the backlog. Do not load or implement multiple future milestones at once.
+
+When promoting the next milestone:
+
+```text
+1. Read the roadmap entry.
+2. Read every source doc listed in that entry.
+3. Compare source docs against current code and implemented milestone docs.
+4. Copy only that milestone's goal, acceptance, out-of-scope, and source docs into .context/MILESTONES.md.
+5. Update AGENTS.md current milestone line.
+6. Ask the human if acceptance is vague, risky, or conflicts with sources.
+```
+
+Ask before coding when:
+
+- Source docs conflict about behavior or priority.
+- Acceptance cannot be verified with a concrete test.
+- A live credential, paid provider account, browser install, or system package is required.
+- A DB migration, destructive file operation, or data cleanup touches user data.
+- A decision would expand scope beyond the promoted milestone.
 
 ## Agent Control Rules
 
