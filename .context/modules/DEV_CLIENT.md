@@ -25,6 +25,8 @@ The dev client should keep light and dark themes available because long desktop 
 
 The product name is VoiceFactory. UI copy should use VoiceFactory unless referring to a specific provider such as Vbee.
 
+Typography decision: use Manrope for UI/display text and Geist Mono for timestamps, provider codes, durations, and other compact technical values. This came from the `docs/artifacts/typography-options.html` exploration.
+
 ## [manual] Invariants & Constraints
 
 The dev client must not become the product UI.

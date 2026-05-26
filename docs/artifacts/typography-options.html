@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VoiceFactory Typography Options</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;600;700&family=Source+Code+Pro:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700;800&family=Spline+Sans:wght@400;500;600;700&display=swap");
+
+    :root {
+      color-scheme: dark;
+      --bg: #0f1316;
+      --panel: #171d21;
+      --panel-2: #12181b;
+      --line: #34424a;
+      --line-soft: #263138;
+      --text: #eef4f5;
+      --muted: #aebbc2;
+      --faint: #75848c;
+      --accent: #3cc8bb;
+      --accent-2: #9de8cd;
+      --warn: #f5c66d;
+      --ok-bg: #e7fff0;
+      --ok-text: #3fb46b;
+      --radius: 8px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      --font-ui: Inter, "Segoe UI", Arial, sans-serif;
+      --font-display: Inter, "Segoe UI", Arial, sans-serif;
+      --font-code: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-ui);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    body[data-combo="plex"] {
+      --font-ui: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+      --font-display: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+      --font-code: "IBM Plex Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    body[data-combo="inter"] {
+      --font-ui: Inter, "Segoe UI", Arial, sans-serif;
+      --font-display: Inter, "Segoe UI", Arial, sans-serif;
+      --font-code: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    body[data-combo="source"] {
+      --font-ui: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      --font-display: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      --font-code: "Source Code Pro", "Cascadia Mono", Consolas, monospace;
+    }
+
+    body[data-combo="spline"] {
+      --font-ui: "Spline Sans", "Segoe UI", Arial, sans-serif;
+      --font-display: "Spline Sans", "Segoe UI", Arial, sans-serif;
+      --font-code: "Roboto Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    body[data-combo="manrope"] {
+      --font-ui: Manrope, "Segoe UI", Arial, sans-serif;
+      --font-display: Manrope, "Segoe UI", Arial, sans-serif;
+      --font-code: "Geist Mono", "Cascadia Mono", Consolas, monospace;
+    }
+
+    .shell {
+      min-height: 100vh;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 2px 0 0;
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .status-pill,
+    .button,
+    .tab,
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #20282d;
+      color: var(--text);
+      font: inherit;
+      font-weight: 800;
+      padding: 0 16px;
+    }
+
+    .status-pill {
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 99px;
+      background: #69d99a;
+    }
+
+    .chooser {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .choice {
+      min-height: 86px;
+      cursor: pointer;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      padding: 12px;
+      box-shadow: none;
+    }
+
+    .choice[aria-pressed="true"] {
+      border-color: var(--accent);
+      outline: 2px solid rgba(60, 200, 187, 0.18);
+    }
+
+    .choice strong {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 900;
+    }
+
+    .choice span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+
+    .active-combo {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin: -4px 0 18px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+    }
+
+    .active-combo strong {
+      color: var(--accent-2);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .active-combo code {
+      color: var(--muted);
+      font-family: var(--font-code);
+      font-size: 12px;
+    }
+
+    .tab {
+      min-width: 92px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .tab.active {
+      background: #1a2227;
+      color: var(--text);
+    }
+
+    .health {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .metric,
+    .panel,
+    .asset-list,
+    .preview {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .metric {
+      padding: 14px;
+      box-shadow: none;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(520px, 1.6fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 19px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .form {
+      padding: 16px;
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel-2);
+      color: var(--text);
+      font: inherit;
+      padding: 12px;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .checkline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .primary {
+      min-width: 180px;
+      border-color: transparent;
+      background: var(--accent);
+      color: #07302d;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line-soft);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      min-height: 24px;
+      border: 0;
+      border-radius: 99px;
+      background: var(--ok-bg);
+      color: var(--ok-text);
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .mono {
+      font-family: var(--font-code);
+      font-size: 12px;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.8fr) minmax(420px, 1.2fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .asset-row {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .asset-row:last-child {
+      border-bottom: 0;
+    }
+
+    .play {
+      width: 28px;
+      height: 28px;
+      border-radius: 99px;
+      border: 0;
+      background: var(--accent);
+      color: #06302d;
+      font-weight: 900;
+    }
+
+    .asset-title {
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .asset-copy {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .preview {
+      padding: 16px;
+    }
+
+    .wave {
+      display: grid;
+      grid-template-columns: 44px 1fr 80px;
+      gap: 12px;
+      align-items: center;
+      min-height: 58px;
+      margin-top: 18px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #2a3034;
+    }
+
+    .bar {
+      height: 8px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent) 0 42%, #0d1113 42% 100%);
+    }
+
+    .timeline {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .timeline-head {
+      display: grid;
+      grid-template-columns: 110px repeat(4, 1fr);
+      color: var(--muted);
+      font-family: var(--font-code);
+      font-size: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .track {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      min-height: 58px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .track:last-child {
+      border-bottom: 0;
+    }
+
+    .track-name {
+      padding: 18px 14px;
+      color: var(--muted);
+      font-weight: 800;
+      border-right: 1px solid var(--line-soft);
+    }
+
+    .clip-lane {
+      position: relative;
+      padding: 12px;
+    }
+
+    .clip {
+      width: 44%;
+      min-height: 34px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, rgba(60, 200, 187, 0.95), rgba(157, 232, 205, 0.76));
+      color: #07302d;
+      font-weight: 900;
+      padding: 8px 10px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .note {
+      max-width: 980px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .chooser,
+      .health,
+      .grid,
+      .asset-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body data-combo="plex">
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Gateway Core</div>
+        <h1>VoiceFactory</h1>
+      </div>
+      <div class="status-pill"><span class="dot"></span>Ready</div>
+    </header>
+
+    <section class="chooser" aria-label="Typography options">
+      <button class="choice" type="button" data-target="plex" aria-pressed="true">
+        <strong>01. Plex Production</strong>
+        <span>IBM Plex Sans + IBM Plex Mono. Can bang, ky thuat, de doc lau.</span>
+      </button>
+      <button class="choice" type="button" data-target="inter" aria-pressed="false">
+        <strong>02. Inter Tooling</strong>
+        <span>Inter + JetBrains Mono. UI hien dai, an toan cho dashboard.</span>
+      </button>
+      <button class="choice" type="button" data-target="source" aria-pressed="false">
+        <strong>03. Source Editorial</strong>
+        <span>Source Sans 3 + Source Code Pro. Tot cho text dai va transcript.</span>
+      </button>
+      <button class="choice" type="button" data-target="spline" aria-pressed="false">
+        <strong>04. Spline Studio</strong>
+        <span>Spline Sans + Roboto Mono. Mem hon, hop app am thanh sang tao.</span>
+      </button>
+      <button class="choice" type="button" data-target="manrope" aria-pressed="false">
+        <strong>05. Manrope Product</strong>
+        <span>Manrope + Geist Mono. Gon, san pham, co cam giac polished.</span>
+      </button>
+    </section>
+
+    <nav class="tabs" aria-label="Workspace tabs">
+      <button class="tab active" type="button">Queue</button>
+      <button class="tab" type="button">Assets</button>
+      <button class="tab" type="button">Edit</button>
+    </nav>
+
+    <section class="active-combo" aria-live="polite">
+      <strong id="combo-name">01. Plex Production</strong>
+      <code id="combo-fonts">IBM Plex Sans + IBM Plex Mono</code>
+    </section>
+
+    <section class="health" aria-label="Runtime health">
+      <div class="metric">
+        <div class="metric-label">Gateway</div>
+        <div class="metric-value">running</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Database</div>
+        <div class="metric-value">ok</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Browser CDP</div>
+        <div class="metric-value">unavailable</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Worker</div>
+        <div class="metric-value">running</div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Queue preview">
+      <div class="panel">
+        <div class="form">
+          <label for="text">Text</label>
+          <textarea id="text">Xin chao, day la job fake dau tien.
+Kiem tra typography cho VoiceFactory.</textarea>
+          <div class="form-row">
+            <div>
+              <label for="voice">Voice</label>
+              <input id="voice" value="fake_voice">
+            </div>
+            <div>
+              <label for="speed">Speed</label>
+              <input id="speed" value="1.1">
+            </div>
+          </div>
+          <div class="action-row">
+            <div class="checkline"><span class="dot"></span>Incognito preview</div>
+            <button class="button primary" type="button">Add Queue</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Queue</h2>
+          <button class="button" type="button">Refresh</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Text</th>
+              <th>Voice</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge">done</span></td>
+              <td>Xin chao, day la job fake dau tien.</td>
+              <td class="mono">fake_voice</td>
+              <td class="mono">2026-05-25 21:33:13</td>
+            </tr>
+            <tr>
+              <td><span class="badge">done</span></td>
+              <td>Kiem tra UI dev client bang browser.</td>
+              <td class="mono">fake_voice</td>
+              <td class="mono">2026-05-25 05:04:16</td>
+            </tr>
+            <tr>
+              <td><span class="badge">done</span></td>
+              <td>Do do dai hang, scan table, status va mono number.</td>
+              <td class="mono">fake_voice</td>
+              <td class="mono">2026-05-25 05:00:56</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="asset-grid" aria-label="Assets and editor preview">
+      <div class="asset-list">
+        <div class="panel-header">
+          <h2>Assets</h2>
+          <button class="button" type="button">Refresh</button>
+        </div>
+        <div class="asset-row">
+          <button class="play" type="button">&gt;</button>
+          <div>
+            <div class="asset-title">1779744793942-8f3a9ae4-79ce.wav</div>
+            <div class="asset-copy">Xin chao, day la job fake dau tien.</div>
+          </div>
+          <div class="mono">1.0s</div>
+        </div>
+        <div class="asset-row">
+          <button class="play" type="button">&gt;</button>
+          <div>
+            <div class="asset-title">1779685844184-f3f9384c-800f.wav</div>
+            <div class="asset-copy">Kiem tra compact asset list.</div>
+          </div>
+          <div class="mono">1.0s</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="preview">
+          <h2>Selected Preview</h2>
+          <p class="asset-copy">Master-detail asset view keeps audio playback out of every row.</p>
+          <div class="wave">
+            <button class="play" type="button">&gt;</button>
+            <div class="bar"></div>
+            <div class="mono">0:12 / 0:30</div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-head">
+            <div></div>
+            <div>00:00</div>
+            <div>00:05</div>
+            <div>00:10</div>
+            <div>00:15</div>
+          </div>
+          <div class="track">
+            <div class="track-name">Voice</div>
+            <div class="clip-lane"><div class="clip">Selected voice clip</div></div>
+          </div>
+          <div class="track">
+            <div class="track-name">Music</div>
+            <div class="clip-lane"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="note">
+      Artifact nay dung CSS font stack de preview nhanh. Neu may chua cai cac font ung vien,
+      trinh duyet se fallback ve Segoe UI/Cascadia Mono. Sau khi chot combo, co the gan webfont
+      hoac bundle local font vao app desktop.
+    </p>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".choice");
+    const comboName = document.querySelector("#combo-name");
+    const comboFonts = document.querySelector("#combo-fonts");
+    const labels = {
+      plex: ["01. Plex Production", "IBM Plex Sans + IBM Plex Mono"],
+      inter: ["02. Inter Tooling", "Inter + JetBrains Mono"],
+      source: ["03. Source Editorial", "Source Sans 3 + Source Code Pro"],
+      spline: ["04. Spline Studio", "Spline Sans + Roboto Mono"],
+      manrope: ["05. Manrope Product", "Manrope + Geist Mono"]
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        document.body.dataset.combo = button.dataset.target;
+        comboName.textContent = labels[button.dataset.target][0];
+        comboFonts.textContent = labels[button.dataset.target][1];
+        buttons.forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+      });
+    });
+  </script>
+</body>
+</html>

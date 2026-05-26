@@ -1,3 +1,30 @@
+<!-- AUTO_START -->
+# Global Context
+
+> **[auto-generated — không sửa tay phần này]**
+
+## [auto] Tech Stack
+
+- Tauri v2
+- Rust (backend)
+
+## [auto] Module Index
+
+Load file context của module cụ thể khi làm việc với nó:
+
+- [`src-tauri`](.context/src-tauri.md)
+- [`src-tauri/src`](.context/src-tauri_src.md)
+
+## [auto] Rust Dependencies (Cargo.toml)
+
+```
+serde
+serde_json
+tauri
+```
+
+<!-- AUTO_END -->
+
 # VoiceFactory - Global Context
 
 ## Project Role
@@ -37,6 +64,7 @@ Podman optional runtime later
 - Browser CDP and Vbee session failures must degrade health, not crash Gateway.
 - Fake adapter must remain available for development and integration tests.
 - TTS providers must be added behind adapter contracts, not hard-coded into job runner or UI.
+- Real provider jobs may carry an execution mode, such as Vbee preview download or Vbee official download; JobRunner routes by adapter contract, not provider-specific branches.
 - Presigned Vbee URLs, when implemented, must be downloaded immediately in the same job execution chain.
 - `.tmp` files must never be exposed through `/api/assets`.
 

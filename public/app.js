@@ -12,6 +12,7 @@ const el = {
   dbValue: document.querySelector('#dbValue'),
   browserValue: document.querySelector('#browserValue'),
   workerValue: document.querySelector('#workerValue'),
+  desktopValue: document.querySelector('#desktopValue'),
   queueForm: document.querySelector('#queueForm'),
   content: document.querySelector('#content'),
   voiceCode: document.querySelector('#voiceCode'),
@@ -94,7 +95,7 @@ function renderAssets() {
 
   el.assetList.innerHTML = state.assets.map((asset) => `
     <article class="asset compact-row ${asset.id === state.selectedAssetId ? 'selected' : ''}" data-asset-id="${escapeHtml(asset.id)}">
-      <button class="play-button" type="button" title="Preview">▶</button>
+      <button class="play-button" type="button" title="Preview">&gt;</button>
       <div class="asset-main">
         <strong>${escapeHtml(trimText(asset.content || asset.filename, 70))}</strong>
         <span>${escapeHtml(asset.filename)}</span>
@@ -132,7 +133,7 @@ function renderAssetDetail() {
 function renderEditAssetBin() {
   el.editAssetBin.innerHTML = state.assets.map((asset) => `
     <div class="asset compact-row">
-      <span class="play-button">+</span>
+      <span class="play-button" aria-hidden="true">+</span>
       <div class="asset-main">
         <strong>${escapeHtml(trimText(asset.content || asset.filename, 52))}</strong>
         <span>${formatDuration(asset.duration_ms)}</span>
@@ -150,6 +151,18 @@ async function refreshHealth() {
   renderHealth();
 }
 
+async function refreshDesktopRuntime() {
+  const invoke = window.__TAURI__?.core?.invoke;
+  if (!invoke || !el.desktopValue) return;
+
+  try {
+    const runtime = await invoke('gateway_runtime_status');
+    el.desktopValue.textContent = runtime.degraded ? 'Degraded' : runtime.ownedByShell ? 'Managed' : 'Reused';
+  } catch {
+    el.desktopValue.textContent = 'Unavailable';
+  }
+}
+
 async function refreshQueue() {
   const data = await api('/api/queue');
   state.jobs = data.jobs || [];
@@ -164,6 +177,7 @@ async function refreshAssets() {
 
 async function refreshAll() {
   await refreshHealth();
+  await refreshDesktopRuntime();
   await Promise.all([refreshQueue(), refreshAssets()]);
 }
 
@@ -236,3 +250,4 @@ refreshAll().catch((error) => {
 });
 
 window.setInterval(refreshHealth, 5000);
+window.setInterval(refreshDesktopRuntime, 5000);

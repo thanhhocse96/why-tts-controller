@@ -3,6 +3,10 @@
 node_modules/
 npm-debug.log*
 
+src-tauri/target/
+src-tauri/gen/
+src-tauri/icons/
+
 data/*.db
 data/*.db-shm
 data/*.db-wal

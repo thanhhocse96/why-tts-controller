@@ -15,9 +15,14 @@
     "gateway:start": "node scripts/gateway-lifecycle.mjs start",
     "gateway:status": "node scripts/gateway-lifecycle.mjs status",
     "gateway:stop": "node scripts/gateway-lifecycle.mjs stop",
+    "desktop:dev": "tauri dev",
+    "desktop:build": "tauri build",
     "smoke": "bash scripts/smoke-gateway.sh",
     "smoke:lifecycle": "bash scripts/smoke-lifecycle.sh",
     "context:build": "python3 ../context-mapping/cli.py build . --quiet",
     "context:check": "python3 ../context-mapping/cli.py check-consistency ."
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.2"
   }
 }

@@ -70,6 +70,31 @@ public/app.js
 
 ## Design Patterns
 
+### Typography Decision Artifact
+
+An exploratory typography artifact exists at:
+
+```text
+docs/artifacts/typography-options.html
+```
+
+It previews VoiceFactory with multiple UI font combinations against the current Queue, Assets, and Edit surfaces.
+
+Selected typography:
+
+```text
+UI / display: Manrope
+Technical values: Geist Mono
+```
+
+The dev client loads these fonts in `public/index.html` and exposes them as CSS tokens in `public/styles.css`:
+
+```text
+--font-ui
+--font-display
+--font-mono
+```
+
 ### Tabbed Workspace
 
 The desktop app should separate major workflows:
@@ -136,4 +161,3 @@ Add to Edit is disabled.
 Export Stereo is disabled.
 
 No timeline persistence exists yet.
-

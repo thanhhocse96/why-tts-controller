@@ -41,6 +41,7 @@ browser session or API call
 polling/protocol handling
 provider errors
 temporary audio URL discovery
+execution mode handling, such as Vbee preview download vs official download
 ```
 
 Provider adapters must not own:
@@ -66,6 +67,7 @@ class TtsProviderAdapter {
       localAudioPath: null,
       metadata: {
         voiceCode: job.voice_code,
+        executionMode: job.execution_mode,
         format: 'mp3',
         protocolWarnings: []
       }
@@ -116,6 +118,23 @@ vbee      -> first real provider target
 future-*  -> paid providers added by adapter contract
 ```
 
+## Execution Mode Routing
+
+Some providers have multiple valid execution workflows. For Vbee, VoiceFactory currently recognizes two future real-provider modes:
+
+```text
+vbee_preview_download   -> use authenticated app/session preview flow and still download the preview audio
+vbee_official_download  -> use the normal software generation/download flow
+```
+
+A batch may mix modes per item. The queue should persist the chosen mode, and the runner should route to provider handlers by contract.
+
+Detailed Vbee workflow notes live in:
+
+```text
+docs/design/07_vbee-dual-execution-workflows.md
+```
+
 ## Non-Negotiable Rules
 
 - JobRunner must call provider contracts, not provider-specific browser/API code.
@@ -123,4 +142,3 @@ future-*  -> paid providers added by adapter contract
 - Provider adapters must not write SQLite.
 - Audio playback must still go through Gateway `/api/audio/:filename`.
 - Temporary URLs must be downloaded immediately in the same job execution chain.
-

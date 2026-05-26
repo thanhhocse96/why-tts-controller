@@ -8,6 +8,10 @@ docs/design/
 
 docs/milestones/
   M0_001_...  # implemented work, named after .context/MILESTONES.md
+
+docs/artifacts/
+  typography-options.html  # exploratory previews and decision artifacts
+  vbee-worker-routing-workflow.md
 ```
 
 ## Naming Rules
@@ -57,6 +61,12 @@ After adding, moving, or renaming a docs file, update this index.
 4. [Migration Plan To Gateway Core](design/04_migration-plan-to-gateway-core.md)
 5. [Critique Response And Plan Amendments](design/05_critique-response-and-plan-amendments.md)
 6. [VoiceFactory Provider Adapter Contract](design/06_voicefactory-provider-adapter-contract.md)
+7. [Vbee Dual Execution Workflows](design/07_vbee-dual-execution-workflows.md)
+
+## Artifacts
+
+1. [VoiceFactory Typography Options](artifacts/typography-options.html)
+2. [Vbee Worker Routing Workflow Trial](artifacts/vbee-worker-routing-workflow.md)
 
 ## Implemented Milestone Docs
 
@@ -72,3 +82,5 @@ After adding, moving, or renaming a docs file, update this index.
 2. [Gateway Lifecycle Test Report](milestones/M1_002_gateway-lifecycle-test-report.md)
 3. [Desktop UI Tabs And Theme Direction](milestones/M1_003_desktop-ui-tabs-and-theme-direction.md)
 4. [VoiceFactory Rename And Provider Scope](milestones/M1_004_voicefactory-rename-and-provider-scope.md)
+5. [Tauri Gateway Lifecycle Shell](milestones/M1_005_tauri-gateway-lifecycle-shell.md)
+6. [Tauri Gateway Lifecycle Test Report](milestones/M1_006_tauri-gateway-lifecycle-test-report.md)

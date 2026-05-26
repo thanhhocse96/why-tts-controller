@@ -40,7 +40,7 @@ Acceptance:
 - [x] M1 lifecycle CLI has a module test report.
 - [x] Desktop UI direction documents Queue/Assets/Edit tabs and light/dark mode.
 - [x] Product name and provider-extension scope are documented as VoiceFactory.
-- [ ] Tauri shell calls or ports the lifecycle behavior.
+- [x] Tauri shell calls or ports the lifecycle behavior.
 
 ## Next: M2 - Browser CDP and Vbee Preview
 
